@@ -3,9 +3,10 @@ LDFLAGS = -lpthread
 
 target1 = multi_threads_sem
 target2 = multi_processes_sem
+target3 = multi_processes_shm_sem
 
 .PHONY: all
-all: $(target1) $(target2)
+all: $(target1) $(target2) $(target3)
 
 $(target1): thread_sem.c debug.c
 	$(CC) -o $@ $^ $(LDFLAGS)
@@ -15,6 +16,9 @@ $(target2): process_sem.c debug.c
 	$(CC) -o $@ $^ $(LDFLAGS)
 	@-rm -f *.o
 
+$(target3): process_shm_sem.c debug.c
+	$(CC) -o $@ $^ $(LDFLAGS)
+
 $(objs):%.o:%.c
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
@@ -22,5 +26,5 @@ $(objs):%.o:%.c
 FORCE: 
 
 clean:
-	rm -f $(target1) $(target2) *.o
+	rm -f $(target1) $(target2) $(target3) *.o
 

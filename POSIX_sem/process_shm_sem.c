@@ -170,8 +170,8 @@ int main(void)
         timer.it_value.tv_usec = 40000;
         timer.it_interval.tv_sec = 0;
         timer.it_interval.tv_usec = 40000;
-        ret = setitimer(ITIMER_REAL, &timer, NULL);
-        if(ret != 0) 
+        status = setitimer(ITIMER_REAL, &timer, NULL);
+        if(status != 0) 
         {
             debug_error("setitimer error");
             return -1;
