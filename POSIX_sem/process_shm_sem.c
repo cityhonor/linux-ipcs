@@ -147,19 +147,6 @@ int child_init(void)
         perror("child shmat failed\r\n");
         return -1;
     }
-    signal(SIGALRM, sem_client);
-
-    struct itimerval timer;
-    timer.it_value.tv_sec = 0;
-    timer.it_value.tv_usec = 40000;
-    timer.it_interval.tv_sec = 0;
-    timer.it_interval.tv_usec = 40000;
-    ret = setitimer(ITIMER_REAL, &timer, NULL);
-    if(ret != 0) 
-    {
-        debug_error("setitimer error");
-        return -1;
-    }
     return 0;
 }
 
@@ -176,6 +163,19 @@ int main(void)
     else if (pid > 0) 
     { /* parent */
         parent_init();
+        signal(SIGALRM, sem_client);
+
+        struct itimerval timer;
+        timer.it_value.tv_sec = 0;
+        timer.it_value.tv_usec = 40000;
+        timer.it_interval.tv_sec = 0;
+        timer.it_interval.tv_usec = 40000;
+        ret = setitimer(ITIMER_REAL, &timer, NULL);
+        if(ret != 0) 
+        {
+            debug_error("setitimer error");
+            return -1;
+        }
         wait(&status);
     }
     else
@@ -197,6 +197,7 @@ int main(void)
     {
         perror("shmctl del failed");
     }
+    printf("main exit\r\n");
     exit(0);
 }
 
